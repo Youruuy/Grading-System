@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grading System</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to right, #e0c3fc, #8ec5fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-wrap: wrap;
+            padding: 30px;
+            width: 700px;
+            justify-content: space-between;
+            border: 3px solid #e0e0e0;
+        }
+        .input-section, .output-section {
+            width: 48%;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #6a0dad;
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #6a0dad;
+            padding-bottom: 10px;
+        }
+        label {
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: bold;
+            display: block;
+        }
+        input {
+            border: 2px solid #dcdcdc;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 15px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+        input:focus {
+            border-color: #6a0dad;
+        }
+        button {
+            background-color: #6a0dad;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 5px 2px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #5a0099;
+            transform: scale(1.05);
+        }
+        .clear-button {
+            background-color: #e74c3c;
+        }
+        .clear-button:hover {
+            background-color: #c0392b;
+        }
+        .result p {
+            margin: 10px 0;
+        }
+        .output-section {
+            text-align: left;
+            display: none; /* Hide initially */
+        }
+        .result {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        .result span {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="input-section">
+            <h2>Grading System</h2>
+            <label for="studentName">Student Name:</label>
+            <input type="text" id="studentName">
+            
+            <label for="course">Course:</label>
+            <input type="text" id="course">
+            
+            <label for="prelim">Prelim:</label>
+            <input type="number" id="prelim" step="0.01">
+            
+            <label for="midterm">Midterm:</label>
+            <input type="number" id="midterm" step="0.01">
+            
+            <label for="final">Finals:</label>
+            <input type="number" id="final" step="0.01">
+            
+            <label for="final">Final Grade:</label>
+            <input type="number" id="final" step="0.01">
+            <button onclick="computeFinalGrade()">Compute</button>
+            <button class="clear-button" onclick="clearInputs()">Clear</button>
+        </div>
+        <div class="output-section" id="outputSection">
+            <h2>Results</h2>
+            <div class="result">
+                <p>Student Name: <span id="resultStudentName">-</span></p>
+                <p>Course: <span id="resultCourse">-</span></p>
+                <p>Prelim: <span id="resultPrelim">-</span></p>
+                <p>Midterm: <span id="resultMidterm">-</span></p>
+                <p>Finals: <span id="resultFinal">-</span></p>
+                <p>Final Grade: <span id="finalGrade">-</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function computeFinalGrade() {
+            const studentName = document.getElementById('studentName').value;
+            const course = document.getElementById('course').value;
+            const prelim = parseFloat(document.getElementById('prelim').value);
+            const midterm = parseFloat(document.getElementById('midterm').value);
+            const final = parseFloat(document.getElementById('final').value);
+
+            if (isNaN(prelim) || isNaN(midterm) || isNaN(final)) {
+                alert("Please enter valid scores for Prelim, Midterm, and Final.");
+                return;
+            }
+
+            const finalGrade = (prelim + midterm + final) / 3;
+
+            document.getElementById('resultStudentName').innerText = studentName || '-';
+            document.getElementById('resultCourse').innerText = course || '-';
+            document.getElementById('resultPrelim').innerText = prelim.toFixed(2);
+            document.getElementById('resultMidterm').innerText = midterm.toFixed(2);
+            document.getElementById('resultFinal').innerText = final.toFixed(2);
+            document.getElementById('finalGrade').innerText = finalGrade.toFixed(2);
+
+            document.getElementById('outputSection').style.display = 'block'; // Show the results section
+        }
+
+        function clearInputs() {
+            document.getElementById('studentName').value = '';
+            document.getElementById('course').value = '';
+            document.getElementById('prelim').value = '';
+            document.getElementById('midterm').value = '';
+            document.getElementById('final').value = '';
+            document.getElementById('resultStudentName').innerText = '-';
+            document.getElementById('resultCourse').innerText = '-';
+            document.getElementById('resultPrelim').innerText = '-';
+            document.getElementById('resultMidterm').innerText = '-';
+            document.getElementById('resultFinal').innerText = '-';
+            document.getElementById('finalGrade').innerText = '-';
+
+            document.getElementById('outputSection').style.display = 'none'; // Hide the results section
+        }
+    </script>
+</body>
+</html>
